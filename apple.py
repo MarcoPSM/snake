@@ -1,5 +1,6 @@
 import random
 import pygame
+from enumerations import Color
 
 
 class Apple:
@@ -8,11 +9,12 @@ class Apple:
     size = 0
     look = None
     board_size = 0
-    color = (255, 0, 0)
+    color = ()
 
     def __init__(self, board_size, cell_size):
         self.size = cell_size
         self.board_size = board_size
+        self.color = Color.RED.value
         self.look = pygame.Surface((self.size, self.size))
         self.look.fill(self.color)
 

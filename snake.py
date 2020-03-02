@@ -1,4 +1,5 @@
 import pygame
+from enumerations import Color, Direction
 
 
 class Snake:
@@ -6,13 +7,15 @@ class Snake:
     cell_size = 0
     look = None
     board_size = 0
-    color = (255, 255, 255)
-    direction = 1
+    color = ()
+    direction = None
 
     def __init__(self, board_size, cell_size):
         self.cell_size = cell_size
         self.board_size = board_size
         initial_pos = self.board_size // 3
+        self.direction = Direction.RIGHT
+        self.color = Color.WHITE.value
         self.body = [(initial_pos, initial_pos),
                      (initial_pos + self.cell_size, initial_pos),
                      (initial_pos + self.cell_size * 2, initial_pos)]
@@ -38,26 +41,26 @@ class Snake:
         for i in range(len(self.body) - 1, 0, -1):
             self.body[i] = (self.body[i - 1][0], self.body[i - 1][1])
 
-        if self.direction == 0:
+        if self.direction == Direction.UP:
             self.body[0] = (self.body[0][0], self.body[0][1] - self.cell_size)
-        if self.direction == 1:
+        if self.direction == Direction.RIGHT:
             self.body[0] = (self.body[0][0] + self.cell_size, self.body[0][1])
-        if self.direction == 2:
+        if self.direction == Direction.DOWN:
             self.body[0] = (self.body[0][0], self.body[0][1] + self.cell_size)
-        if self.direction == 3:
+        if self.direction == Direction.LEFT:
             self.body[0] = (self.body[0][0] - self.cell_size, self.body[0][1])
 
     def move_up(self):
-        self.direction = 0
+        self.direction = Direction.UP
 
     def move_right(self):
-        self.direction = 1
+        self.direction = Direction.RIGHT
 
     def move_down(self):
-        self.direction = 2
+        self.direction = Direction.DOWN
 
     def move_left(self):
-        self.direction = 3
+        self.direction = Direction.LEFT
 
     def draw(self, surface):
         for part in self.body:

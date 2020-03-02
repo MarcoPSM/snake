@@ -16,6 +16,7 @@ class Game:
         self.cell_size = 40
         self._running = True
         self.speed = 10
+        self.pause = 2
 
         self.snake = Snake(self.board_size, self.cell_size)
         self.apple = Apple(self.board_size, self.cell_size)
@@ -45,7 +46,7 @@ class Game:
         game_over = False
         while self._running:
             if game_over:
-                time.sleep(2)
+                time.sleep(self.pause)
                 exit()
 
             self.clock.tick(self.speed)
