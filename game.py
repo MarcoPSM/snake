@@ -14,9 +14,12 @@ class Game:
         self.title = "Snake"
         self.board_size = 600  # its always a square
         self.cell_size = 40
-        self._running = True
+        self.board_color = Color.BLACK.value
+        self.has_grid = True
+        self.grid_color = Color.GRAY.value
         self.speed = 10
         self.pause = 2
+        self._running = True
 
         self.snake = Snake(self.board_size, self.cell_size)
         self.apple = Apple(self.board_size, self.cell_size)
@@ -33,9 +36,9 @@ class Game:
 
     def draw_grid(self):
         for i in range(0, self.board_size, self.cell_size):  # Draw vertical lines
-            pygame.draw.line(self.screen, Color.GRAY.value, (i, 0), (i, self.board_size))
+            pygame.draw.line(self.screen, self.grid_color, (i, 0), (i, self.board_size))
         for i in range(0, self.board_size, self.cell_size):  # Draw horizontal lines
-            pygame.draw.line(self.screen, Color.GRAY.value, (0, i), (self.board_size, i))
+            pygame.draw.line(self.screen, self.grid_color, (0, i), (self.board_size, i))
 
     def run(self):
         pygame.init()
@@ -79,10 +82,12 @@ class Game:
                 continue
 
             self.snake.crawl()
-            self.screen.fill(Color.BLACK.value)
+            self.screen.fill(self.board_color)
             self.apple.draw(self.screen)
 
-            self.draw_grid()
+            if self.has_grid:
+                self.draw_grid()
+
             self.snake.draw(self.screen)
             pygame.display.update()
 
