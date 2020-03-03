@@ -13,14 +13,20 @@ class Snake:
     def __init__(self, board_size, cell_size):
         self.cell_size = cell_size
         self.board_size = board_size
-        initial_pos = self.board_size // 3
+        initial_pos = self.initial_position()
         self.direction = Direction.RIGHT
         self.color = Color.WHITE.value
-        self.body = [(initial_pos, initial_pos),
-                     (initial_pos + self.cell_size, initial_pos),
-                     (initial_pos + self.cell_size * 2, initial_pos)]
+        self.body = [(initial_pos[0], initial_pos[1]),
+                     (initial_pos[0] + self.cell_size, initial_pos[1]),
+                     (initial_pos[0] + self.cell_size * 2, initial_pos[1])]
         self.look = pygame.Surface((self.cell_size, self.cell_size))
         self.look.fill(self.color)
+
+    def initial_position(self):
+        pos = self.board_size // 3
+        x = pos - pos % self.cell_size
+        y = pos - pos % self.cell_size
+        return x, y
 
     def head(self):
         return self.body[0]
