@@ -16,6 +16,7 @@ class Snake:
         initial_pos = self.initial_position()
         self.direction = Direction.RIGHT
         self.color = Color.WHITE.value
+
         self.body = [(initial_pos[0], initial_pos[1]),
                      (initial_pos[0] + self.cell_size, initial_pos[1]),
                      (initial_pos[0] + self.cell_size * 2, initial_pos[1])]

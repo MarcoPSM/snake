@@ -19,7 +19,20 @@ class Game:
         self.grid_color = Color.GRAY.value
         self.speed = 10
         self.pause = 2
-        self._running = True
+        self.running = True
+        # Score
+        self.score = 0
+        self.score_font = "bahnschrift"
+        self.score_size = 30
+        self.score_color = Color.GREEN.value
+        self.score_position = (self.board_size - 4 * self.cell_size, self.cell_size)
+        self.score_text = 'Score: '
+        # Game over
+        self.game_over_font = "bahnschrift"
+        self.game_over_size = 120
+        self.game_over_color = Color.GREEN.value
+        self.game_over_position = (self.board_size // 6, self.board_size // 4)
+        self.game_over_text = 'Game Over'
 
         self.snake = Snake(self.board_size, self.cell_size)
         self.apple = Apple(self.board_size, self.cell_size)
@@ -40,20 +53,27 @@ class Game:
         for i in range(0, self.board_size, self.cell_size):  # Draw horizontal lines
             pygame.draw.line(self.screen, self.grid_color, (0, i), (self.board_size, i))
 
+    def draw_score(self):
+        score_font = pygame.font.SysFont(self.score_font, self.score_size)
+        text = score_font.render(self.score_text + str(self.score), True, self.score_color)
+        self.screen.blit(text, self.score_position)
+
+    def game_over(self):
+        print("GO")
+        font = pygame.font.SysFont(self.game_over_font, self.game_over_size)
+        text = font.render(self.game_over_text, True, self.game_over_color)
+        self.screen.blit(text, self.game_over_position)
+        pygame.display.update()
+        time.sleep(self.pause)
+        exit()
+
     def run(self):
         pygame.init()
         self.screen = pygame.display.set_mode((self.board_size, self.board_size))
         pygame.display.set_caption(self.title)
         self.clock = pygame.time.Clock()
 
-        game_over = False
-        while self._running:
-            if game_over:
-                time.sleep(self.pause)
-                exit()
-
-            self.clock.tick(self.speed)
-
+        while self.running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -72,24 +92,25 @@ class Game:
             if self.eat():
                 self.apple.random_position()
                 self.snake.grow()
+                self.score += 1
 
             if self.boundaries_collision():
-                game_over = True
-                continue
+                self.game_over()
 
             if self.snake.self_collision():
-                game_over = True
-                continue
+                self.game_over()
 
             self.snake.crawl()
-            self.screen.fill(self.board_color)
-            self.apple.draw(self.screen)
 
+            self.screen.fill(self.board_color)
             if self.has_grid:
                 self.draw_grid()
-
+            self.apple.draw(self.screen)
             self.snake.draw(self.screen)
+            self.draw_score()
             pygame.display.update()
+
+            self.clock.tick(self.speed)
 
 
 if __name__ == '__main__':
